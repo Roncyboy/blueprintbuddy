@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 import { useRouter } from "next/router"
 import Link from "next/link"
+import { Button } from "@mantine/core"
 
 const prisma = new PrismaClient()
 
@@ -10,8 +11,9 @@ export default function Home({projects}) {
 
   return (
     <div>
-      <button onClick={() => router.push('/addproject')}>Create Project</button>
-      <h1>Home</h1>
+     
+      <h1>Home</h1> 
+      {/* <Button onClick={() => router.push('/addproject')}>Create Project</Button> */}
       {projects.map(project => (
         <Link href={`/projects/${project.id}`} key={project.id}>
           <h2>{project.title}</h2>

@@ -13,13 +13,12 @@ export default async function handler(req, res) {
         return
     }
 
-    console.log(session.user.email)
+ 
     
     const prismaUser = await prisma.user.findUnique({
         where: { email: session.user.email },
     })
 
-    console.log(prismaUser)
 
     if (!prismaUser) {
         res.status(401).json({ error: 'Unauthorized' })
@@ -53,7 +52,7 @@ export default async function handler(req, res) {
       // Delete an existing project
       const { projectid } = req.body
       const deletedProject = await prisma.project.delete({
-        where: { id },
+        where: { projectid },
       })
       res.status(200).json(deletedProject)
       break

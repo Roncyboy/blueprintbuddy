@@ -1,8 +1,20 @@
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { Button } from "@mantine/core";
+import { useRouter } from "next/router";
+import styled from "styled-components";
+
+const StyleNav = styled.nav`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  `;
 
 function Navbar() {
+  const router = useRouter();
     const { data: session } = useSession();
 
     const [showDropdown, setShowDropdown] = useState(false);
@@ -18,40 +30,34 @@ function Navbar() {
   };
 
   return (
-    <nav>
-      <ul>
-        <li>
-          <Link href="/">
+    <StyleNav>
+          <Button onClick={() => router.push("/")}>
             Home
-          </Link>
-        </li>
-        <li>
-          <Link href="/create-project">
+          </Button>
+          <Button onClick={() => router.push("/addproject")}>
             Create Project
-          </Link>
-        </li>
+          </Button>
         {session ? (
             <div className="user-profile" onClick={handleUserImageClick}>
             <img src={session.user.image} alt="User avatar" height={50} width={50}/>
           {showDropdown && (
             <>
-            <li>
-              <Link href="/profile">
+            <div>
+              <Button onClick={() => router.push("/profile")}>
                 Profile
-              </Link>
-            </li>
-            <li>
-              <Link href="/api/auth/signout">Sign out</Link>
-            </li>
+              </Button>
+            </div>
+            <div>
+              <Button onClick={() => router.push("/api/auth/signout")}>Sign out</Button>
+            </div>
           </>)}
             </div>
         ) : (
-          <li>
-            <Link href="/api/auth/signin">Sign in</Link>
-          </li>
+          <div>
+            <Button onClick={() => router.push("/api/auth/signin")}>Sign in</Button>
+          </div>
         )}
-      </ul>
-    </nav>
+    </StyleNav>
   );
 }
 

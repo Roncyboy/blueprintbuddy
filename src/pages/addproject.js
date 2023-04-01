@@ -3,6 +3,24 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import { Select, TextInput, NumberInput, Button } from '@mantine/core';
+import Container from 'components/container';
+import FlexBox from 'components/flexbox';
+import styled from 'styled-components';
+const StyledBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+  padding: 1rem;
+  max-width: 30%;
+  margin: 0 auto;
+  border-radius: 5em;
+`;
+
 
 export default function NewProjectPage() {
     const router = useRouter();
@@ -65,27 +83,33 @@ export default function NewProjectPage() {
     };
 
   return (
-    <div>
+    <StyledBox>
       <h1>New Project</h1>
+      <FlexBox>
       <form onSubmit={handleSubmit(onSubmit)}>
              <label>
         Title:
-        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+        <TextInput type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
       </label>
       <label>
         Content:
-        <textarea value={content} onChange={(e) => setContent(e.target.value)} />
+        <TextInput value={content} onChange={(e) => setContent(e.target.value)} />
       </label>
         <h2>Items</h2>
+        <Button type="button" onClick={addItem}>
+          Add Item
+        </Button>
         {items.map((_, i) => (
-            <div key={i}>   
+            <FlexBox align='space-between' direction="column" padding="10px" key={i}>   
                 <label>
-                    Title:
-                    <input type="text" name="title" value={items[i].title} onChange={(e) => handleItemChange(e, i)} />
+                    Item Name:
+                    <TextInput type="text" name="title" value={items[i].title} onChange={(e) => handleItemChange(e, i)} />
                 </label>
                 <label>
-                    Material:
-                    <input type="text" name="material" value={items[i].material} onChange={(e) => handleItemChange(e, i)} />
+                    <TextInput 
+                    label="Material"
+                    placeholder="Pick one"
+                    type="text" name="material" value={items[i].material} onChange={(e) => handleItemChange(e, i)} />
                 </label>
                 <label>
                     Height:
@@ -107,16 +131,14 @@ export default function NewProjectPage() {
                     Angle:
                     <input type="number" name="angle" value={items[i].angle} onChange={(e) => handleItemChange(e, i)} />
                 </label>
-                <button type="button" onClick={() => handleRemoveItem(i)}>
+                <Button type="button" onClick={() => handleRemoveItem(i)}>
                     Remove Item
-                </button>
-            </div>
+                </Button>
+            </FlexBox >
         ))}
-        <button type="button" onClick={addItem}>
-          Add Item
-        </button>
-        <button type="submit">Create Project</button>
+        <Button type="submit">Create Project</Button>
       </form>
-    </div>
+      </FlexBox>
+    </StyledBox>
   );
 }
