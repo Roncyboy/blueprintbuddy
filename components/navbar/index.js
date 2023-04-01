@@ -48,6 +48,11 @@ function Navbar() {
               </Button>
             </div>
             <div>
+              <Button onClick={() => router.push("/projects")}>
+                My Projects
+              </Button>
+            </div>
+            <div>
               <Button onClick={() => router.push("/api/auth/signout")}>Sign out</Button>
             </div>
           </>)}

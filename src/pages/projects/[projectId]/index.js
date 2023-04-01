@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { PrismaClient } from '@prisma/client'
 import { useSession } from 'next-auth/react';
 import { Checkbox, Button } from '@mantine/core';
-
+import axios from 'axios';
 
 const prisma = new PrismaClient()
 
@@ -15,12 +15,15 @@ export default function Project({ project, items}) {
   const router = useRouter()
   const id = project.id
 
-  const deletePost = async () => {
-    await fetch(`/api/projects/${id}`, {
+const deletePost = async () => {
+    const res = await fetch(`/api/projects/${id}`, {
       method: 'DELETE',
     });
+    const json = await res.json();
+    if (!res.ok) throw Error(json.message);
     router.push('/');
   };
+  
 
   useEffect(() => {
     if (deleting) {
