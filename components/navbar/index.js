@@ -3,16 +3,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { Button } from "@mantine/core";
 import { useRouter } from "next/router";
-import styled from "styled-components";
-import styles from "./navbar.module.css";
-
-const StyleNav = styled.nav`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  `;
+import styles from "./Navbar.module.css";
 
 function Navbar() {
   const router = useRouter();
