@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "@mantine/core";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import styles from "./navbar.module.css";
 
 const StyleNav = styled.nav`
   display: flex;
@@ -30,7 +31,7 @@ function Navbar() {
   };
 
   return (
-    <StyleNav>
+    <div className={styles.Container}>
           <Button onClick={() => router.push("/")}>
             Home
           </Button>
@@ -62,7 +63,7 @@ function Navbar() {
             <Button onClick={() => router.push("/api/auth/signin")}>Sign in</Button>
           </div>
         )}
-    </StyleNav>
+    </div>
   );
 }
 

@@ -4,6 +4,8 @@ import { PrismaClient } from '@prisma/client'
 import { useSession } from 'next-auth/react';
 import { Checkbox, Button } from '@mantine/core';
 import axios from 'axios';
+import StickyNoteGrid from 'components/Layout';
+import StickyNote, { ItemStickyNote } from 'components/stickynote';
 
 const prisma = new PrismaClient()
 
@@ -129,8 +131,11 @@ const deletePost = async () => {
     <div>
       <h1>{project.title}</h1>
       <p>{project.content}</p>
-      <ul>
+      <h2>Items</h2>
+    
+      <ul>  <StickyNoteGrid>
         {items.map((item) => (
+          <ItemStickyNote>
           <li key={item.id}>
             <div>
                 Item: {item.title}
@@ -155,14 +160,16 @@ const deletePost = async () => {
             <div>
                 Angle: {item.angle}
             </div>
-
+      
             {isAuthor && (
         <button disabled={deleting} nClick={() => handleItemDelete(item.id)}>
           {deleting ? 'Deleting...' : 'Delete'}
         </button>
       )}
           </li>
+          </ItemStickyNote>
         ))}
+      </StickyNoteGrid>
       </ul>
       <form onSubmit={handleNewItemSubmit}>
         <input
@@ -211,8 +218,10 @@ const deletePost = async () => {
       </form>
         <Checkbox checked={finished} label="Finished Project" onClick={handleFinish}>
         </Checkbox>
+        <div className="author">
         <Button onClick={handleDelete}>Delete Project</Button>
         <Button onClick={handleEdit}>Edit</Button>
+        </div>
       <button onClick={() => router.push('/')}>Home</button>
     </div>
   )
