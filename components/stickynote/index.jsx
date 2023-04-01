@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../src/styles/StickyNote.module.css";
+import styles from "./Stickynote.module.css";
 
 const StickyNote = ({ children }) => {
     const colors = ["#F9DCC4", "#F4B4C1", "#C4E0F9", "#C1F4C4", "#F9C4C4"];
