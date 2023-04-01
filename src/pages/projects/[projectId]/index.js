@@ -1,13 +1,32 @@
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PrismaClient } from '@prisma/client'
+import { useSession } from 'next-auth/react';
 
 const prisma = new PrismaClient()
 
 export default function Project({ project, items}) {
+    const { data: session, status } = useSession();
+    const [loading, setLoading] = useState(true);
+
+    const [deleting, setDeleting] = useState(false);
   const router = useRouter()
   const id = project.id
 
+  useEffect(() => {
+    if (deleting) {
+      deletePost();
+    }
+  }, [deleting]);
+
+  console.log(project)
+    console.log(project.authorId)
+
+  const isAuthor = project.author === session?.user?.email;
+
+  const handleDelete = () => {
+    setDeleting(true);
+  };
   const [newItemTitle, setNewItemTitle] = useState('')
 
   const handleNewItemSubmit = async (e) => {
@@ -56,7 +75,11 @@ export default function Project({ project, items}) {
                 handleItemTitleChange(item.id, e.target.value)
               }
             />
-            <button onClick={() => handleItemDelete(item.id)}>Delete</button>
+            {isAuthor && (
+        <button disabled={deleting} nClick={() => handleItemDelete(item.id)}>
+          {deleting ? 'Deleting...' : 'Delete'}
+        </button>
+      )}
           </li>
         ))}
       </ul>
@@ -68,6 +91,7 @@ export default function Project({ project, items}) {
         />
         <button>Add item</button>
       </form>
+      <button onClick={() => router.push('/')}>Home</button>
     </div>
   )
 }
@@ -95,4 +119,4 @@ export async function getServerSideProps(context) {
         items : JSON.parse(JSON.stringify(items)),
         },
     }
-    }
+}

@@ -2,11 +2,16 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 export default function NewProjectPage() {
     const router = useRouter();
     const { register, handleSubmit } = useForm();
-    
+    const { data: session, status } = useSession();
+
+    console.log(session);
+    const auth = session?.user?.email;
+
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [items, setItems] = useState([]);
@@ -22,7 +27,7 @@ export default function NewProjectPage() {
       });
 
     const onSubmit = async (data) => {
-        const res = await axios.post('/api/projects', { title, content, items });
+        const res = await axios.post('/api/projects', { title, content, items, auth });
 
         console.log(data);
         router.push('/');

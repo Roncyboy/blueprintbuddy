@@ -4,8 +4,20 @@ const { PrismaClient } = require('@prisma/client')
 // Instantiate PrismaClient
 const prisma = new PrismaClient()
 
+const getPrismaUser = async (req) => {
+  const prismaUser = await prisma.user.findUnique({
+    where: {
+      email: req.session.user.email,
+    },
+  })
+
+  console.log('prismaUser', prismaUser)
+  return prismaUser
+}
+
+
 // Define the handler function for the POST request
-const createProjectHandler = async (req, res) => {
+const createProjectHandler = async (req, res, prismaUser) => {
   const { title, content, items } = req.body
 
   try {
@@ -14,6 +26,7 @@ const createProjectHandler = async (req, res) => {
       data: {
         title,
         content,
+
         items: {
           // Map over the items array and create a new item for each one
           create: items.map(item => ({
