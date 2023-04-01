@@ -18,7 +18,39 @@ const StyledBox = styled.div`
   padding: 1rem;
   max-width: 30%;
   margin: 0 auto;
-  border-radius: 5em;
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: #f5f5f5;
+    padding: 1rem;
+    
+    label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    input {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+
 `;
 
 
@@ -37,15 +69,21 @@ export default function NewProjectPage() {
     const [newItem, setNewItem] = useState({
         title: "",
         material: "",
-        height: 0,
-        width: 0,
-        depth: 0,
-        length: 0,
-        angle: 0,
+        height: "0",
+        width: "0",
+        depth: "0",
+        length: "0",
+        angle: "0",
       });
 
     const onSubmit = async (data) => {
-        const res = await axios.post('/api/projects', { title, content, items, auth });
+        const res = await axios.post('/api/projects', {
+            title,
+            content,
+            items,
+            auth,
+        });
+        
 
         console.log(data);
         router.push('/');
@@ -59,11 +97,11 @@ export default function NewProjectPage() {
     setNewItem({
       title: "",
       material: "",
-      height: 0,
-      width: 0,
-      depth: 0,
-      length: 0,
-      angle: 0,
+      height: "0",
+      width: "0",
+      depth: "0",
+      length: "0",
+      angle: "0",
     });
   };
 
@@ -79,7 +117,7 @@ export default function NewProjectPage() {
     };
 
     const addItem = () => {
-        setItems([...items, { title: '', material: '', height: 0, width: 0, depth: 0, length: 0, angle: 0 }]);
+        setItems([...items, { title: '', material: '', height: "0", width: "0", depth: "0", length: "0", angle: "0" }]);
     };
 
   return (

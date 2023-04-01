@@ -1,24 +1,41 @@
 // Import the PrismaClient constructor from the prisma package
-const { PrismaClient } = require('@prisma/client')
+import { PrismaClient } from '@prisma/client'
 
 // Instantiate PrismaClient
 const prisma = new PrismaClient()
 
-const getPrismaUser = async (req) => {
-  const prismaUser = await prisma.user.findUnique({
-    where: {
-      email: req.session.user.email,
-    },
-  })
+// const getPrismaUser = async (req) => {
+//   const prismaUser = await prisma.user.findUnique({
+//     where: {
+//       email: req.session.user.email,
+//     },
+//   })
 
-  console.log('prismaUser', prismaUser)
-  return prismaUser
-}
+//   return prismaUser
+// }
 
 
 // Define the handler function for the POST request
-const createProjectHandler = async (req, res, prismaUser) => {
-  const { title, content, items } = req.body
+const createProjectHandler = async (req, res) => {
+  const { title, content, items, auth } = req.body
+
+  // // Get the user from the database
+  // const prismaUser = await prisma.user.findUnique({
+  //   where: {
+  //     email: auth.user.email,
+  //   },
+  // })
+
+
+  // const prismaUser = await prisma.user.findUnique({
+  //   where: {
+  //     email: req.session.user.email,
+  //   },
+  // })
+
+  // if (!prismaUser) {
+  //   return res.status(404).json({ error: 'User not found' })
+  // }
 
   try {
     // Create a new project in the database
@@ -26,7 +43,6 @@ const createProjectHandler = async (req, res, prismaUser) => {
       data: {
         title,
         content,
-
         items: {
           // Map over the items array and create a new item for each one
           create: items.map(item => ({
@@ -38,6 +54,7 @@ const createProjectHandler = async (req, res, prismaUser) => {
             length: item.length,
             angle: item.angle,
             finished: item.finished,
+            projectId: item.projectId,
           })),
         },
       },
@@ -51,7 +68,7 @@ const createProjectHandler = async (req, res, prismaUser) => {
     res.status(201).json(project)
   } catch (error) {
     // Send an error response if the project creation failed
-    res.status(500).json({ error: 'Failed to create project' })
+    res.status(500).json({ error: error.message })
   }
 }
 

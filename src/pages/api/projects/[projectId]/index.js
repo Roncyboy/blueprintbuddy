@@ -41,18 +41,18 @@ export default async function handler(req, res) {
       break
     case 'PUT':
       // Update an existing project
-      const { id, ...data } = req.body
+      const { projectId, ...data } = req.body
       const updatedProject = await prisma.project.update({
-        where: { id: parseInt(id) },
+        where: { projectId },
         data,
       })
       res.status(200).json(updatedProject)
       break
     case 'DELETE':
       // Delete a project
-      const projectId = parseInt(req.query.projectId)
+      const id = parseInt(req.query.projectId)
       const deletedProject = await prisma.project.delete({
-        where: { id: projectId},
+        where: { id: id},
       })
       res.status(200).json(deletedProject)
       break
