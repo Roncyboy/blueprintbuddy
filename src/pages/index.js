@@ -1,31 +1,36 @@
 import { PrismaClient } from "@prisma/client"
 import { useRouter } from "next/router"
+import RulerInput from 'components/Ruler'
+import Link from "next/link"
 
 const prisma = new PrismaClient()
 
-export default function Home({posts}) {
+export default function Home({projects}) {
   const router = useRouter()
 
   return (
     <div>
-      <button onClick={() => router.push('/addpost')}>Add Post</button>
+      <button onClick={() => router.push('/addproject')}>Add Project</button>
+      <button onClick={() => router.push('/api/auth/signin')}>Sign In</button>
       <h1>Home</h1>
-      {posts.map((post) => (
-        <div key={post.id}>
-          <h2>{post.title}</h2>
-          <p>{post.content}</p>
-        </div>
-      ))}
+      {projects.map(project => (
+        <Link href={`/projects/${project.id}`} key={project.id}>
+          <h2>{project.title}</h2>
+          <p>{project.content}</p>
+          {/* <p>{project.item.length}</p> */}
+        </Link>
+        ))}
+
     </div>
   )
 }
 
-export async function getServerSideProps() {
-  const posts = await prisma.post.findMany()
+export async function getServerSideProps(context) {
+const projects = await prisma.project.findMany()
 
   return {
     props: {
-      posts: JSON.parse(JSON.stringify(posts)),
-    },
+      projects: JSON.parse(JSON.stringify(projects)),
+    }
   }
 }

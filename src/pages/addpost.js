@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import RulerInput from 'components/ruler';
+import ProtractorInput from 'components/protractor';
 
 
 export default function AddPost() {
@@ -10,7 +12,7 @@ export default function AddPost() {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const res = await axios.post('/api/posts', { title, content })
+        const res = await axios.post('/api/projects', { title, content })
         console.log(res.data)
         router.push('/')
     }
@@ -32,6 +34,8 @@ export default function AddPost() {
             value={content}
             onChange={(e) => setContent(e.target.value)}
             />
+            <RulerInput />
+            <ProtractorInput />            
             <button type="submit">Add Post</button>
         </form>
         </div>
