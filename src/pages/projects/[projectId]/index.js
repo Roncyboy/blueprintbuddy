@@ -106,7 +106,8 @@ export default function Project({ project, items}) {
 
   return (
     <div>
-      <h1>{project.title}1</h1>
+      <h1>{project.title}</h1>
+      <p>{project.content}</p>
       <ul>
         {items.map((item) => (
           <li key={item.id}>
@@ -116,7 +117,6 @@ export default function Project({ project, items}) {
             <Checkbox label="Finished" onClick={handleFinish}>
           Finished Item
         </Checkbox>
-
             <div>
                 Material: {item.material}
             </div>
@@ -152,7 +152,7 @@ export default function Project({ project, items}) {
         />
         <button>Add item</button>
       </form>
-        <Checkbox label="Finished" onClick={handleFinish}>
+        <Checkbox label="Finished Project" onClick={handleFinish}>
           Finished Project
         </Checkbox>
         <Button onClick={handleDelete}>Delete Project</Button>

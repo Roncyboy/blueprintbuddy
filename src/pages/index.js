@@ -7,7 +7,6 @@ const prisma = new PrismaClient()
 
 export default function Home({projects}) {
   const router = useRouter()
-  console.log(projects)
 
   return (
     <div>
