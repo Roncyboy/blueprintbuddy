@@ -41,9 +41,10 @@ export default async function handler(req, res) {
       break
     case 'PUT':
       // Update an existing project
-      const { projectId, ...data } = req.body
+      const { ...data } = req.body
+      const updatedId = parseInt(req.query.projectId)
       const updatedProject = await prisma.project.update({
-        where: { projectId },
+        where: { id: updatedId },
         data,
       })
       res.status(200).json(updatedProject)

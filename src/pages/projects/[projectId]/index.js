@@ -40,12 +40,27 @@ const deletePost = async () => {
     setDeleting(true);
   };
   const [newItemTitle, setNewItemTitle] = useState('')
+  const [newItemMaterial, setNewItemMaterial] = useState('')
+  const [newItemHeight, setNewItemHeight] = useState('')
+  const [newItemWidth, setNewItemWidth] = useState('')
+  const [newItemDepth, setNewItemDepth] = useState('')
+  const [newItemLength, setNewItemLength] = useState('')
+  const [newItemAngle, setNewItemAngle] = useState('')
+
 
   const handleNewItemSubmit = async (e) => {
     e.preventDefault()
     const item = await fetch(`/api/projects/${id}/items`, {
       method: 'POST',
-      body: JSON.stringify({ title: newItemTitle }),
+      body: JSON.stringify({ 
+        title: newItemTitle,
+        material: newItemMaterial,
+        height: newItemHeight,
+        width: newItemWidth,
+        depth: newItemDepth,
+        length: newItemLength,
+        angle: newItemAngle,
+      }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -53,6 +68,8 @@ const deletePost = async () => {
     setNewItemTitle('')
     router.replace(router.asPath)
   }
+
+  const [finished, setFinished] = useState(project.finished)
 
   const handleItemTitleChange = async (itemId, newTitle) => {
     await fetch(`/api/projects/${id}/items/${itemId}`, {
@@ -75,11 +92,12 @@ const deletePost = async () => {
   const handleFinish = async () => {
     await fetch(`/api/projects/${id}`, {
       method: 'PUT',
-      body: JSON.stringify({ finished: true }),
+      body: JSON.stringify({ finished: finished }),
       headers: {
         'Content-Type': 'application/json',
       },
     })
+    setFinished(!finished)
     router.replace(router.asPath)
   }
 
@@ -117,8 +135,7 @@ const deletePost = async () => {
             <div>
                 Item: {item.title}
             </div>
-            <Checkbox label="Finished" onClick={handleFinish}>
-          Finished Item
+            <Checkbox label="Finished" onClick={handleFinish} checked={item.finish}>
         </Checkbox>
             <div>
                 Material: {item.material}
@@ -151,12 +168,48 @@ const deletePost = async () => {
         <input
           type="text"
           value={newItemTitle}
+          placeholder='Item Title'
           onChange={(e) => setNewItemTitle(e.target.value)}
+        />
+        <input
+          type="text"
+          value={newItemMaterial}
+          placeholder='Item Material'
+          onChange={(e) => setNewItemMaterial(e.target.value)}
+        />
+        <input
+          type="text"
+          value={newItemHeight}
+          placeholder='Item Height'
+          onChange={(e) => setNewItemHeight(e.target.value)}
+        />
+        <input
+          type="text"
+          value={newItemWidth}
+          placeholder='Item Width'
+          onChange={(e) => setNewItemWidth(e.target.value)}
+        />
+        <input
+          type="text"
+          value={newItemDepth}
+          placeholder='Item Depth'
+          onChange={(e) => setNewItemDepth(e.target.value)}
+        />
+        <input
+          type="text"
+          value={newItemLength} 
+          placeholder='Item Length'
+          onChange={(e) => setNewItemLength(e.target.value)}
+        />
+        <input
+          type="text"
+          value={newItemAngle}
+          placeholder='Item Angle'
+          onChange={(e) => setNewItemAngle(e.target.value)}
         />
         <button>Add item</button>
       </form>
-        <Checkbox label="Finished Project" onClick={handleFinish}>
-          Finished Project
+        <Checkbox checked={finished} label="Finished Project" onClick={handleFinish}>
         </Checkbox>
         <Button onClick={handleDelete}>Delete Project</Button>
         <Button onClick={handleEdit}>Edit</Button>
